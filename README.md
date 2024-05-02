@@ -1,14 +1,12 @@
 # Twitch Plays X (by RythonDev)
 
-> (Credits to [TwitchPlaysPokemon] and [TwitchPlayX by hzoo](https://github.com/hzoo/TwitchPlaysX))
-
 Allows your Twitch chat to play games such as Pokemon!
 
 ![Python Badge](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff&style=for-the-badge)
 ![Windows 11 Badge](https://img.shields.io/badge/Windows%2011-0078D4?logo=windows11&logoColor=fff&style=for-the-badge)
 ![Linux Badge](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=000&style=for-the-badge)
 
-## How it works
+## How It Works
 
 1. Connects to your Twitch chat
 2. Reads messages
@@ -32,12 +30,12 @@ Allows your Twitch chat to play games such as Pokemon!
 
 4. Install the requirements:
 
-    Windows:
+    **Windows:**
     ```
     pip install pywin32
     ```
 
-    Linux:
+    **Linux:**
     ```
     sudo apt-get install xdotool
     ```
@@ -46,3 +44,9 @@ Allows your Twitch chat to play games such as Pokemon!
     ```
     py main.py
     ```
+
+## Credits
+
+- Referenced [TwitchPlayX by hzoo](https://github.com/hzoo/TwitchPlaysX)
+- Developed by [RythonDev](https://twitch.tv/RythonDev)
+- Commissioned by [Seiji](https://twitch.tv/Seiji)
