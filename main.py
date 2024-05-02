@@ -3,7 +3,7 @@ from functions import TwitchPlaysX
 import platform
 
 # SETTINGS
-CHANNEL_NAME = "rythondev"
+CHANNEL_NAME = "CHANNEL_NAME"
 KEYDELAY = 0.3
 
 # Keymap for Windows
