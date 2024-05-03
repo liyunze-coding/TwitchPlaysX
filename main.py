@@ -4,7 +4,7 @@ import platform
 import asyncio
 
 # SETTINGS
-CHANNEL_NAME = "RythonDev"
+CHANNEL_NAME = "CHANNEL_NAME"  # Twitch channel name
 KEYDELAY = 0.3
 X_LIMIT = 10  # "up20" will be converted to "up10" if X_LIMIT is 10
 KILL_SWITCH_COMMANDS = ["!killpokemon"]  # must be all lowercase
