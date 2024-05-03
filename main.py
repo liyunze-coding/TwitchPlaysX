@@ -7,6 +7,7 @@ import asyncio
 CHANNEL_NAME = "RythonDev"
 KEYDELAY = 0.3
 X_LIMIT = 10  # "up20" will be converted to "up10" if X_LIMIT is 10
+KILL_SWITCH_COMMANDS = ["!killpokemon"]  # must be all lowercase
 
 # Keymap for Windows
 windowsKeyMap = {
@@ -46,10 +47,12 @@ async def main():
 
         keymap = windowsKeyMap if os_type == "Windows" else linuxKeyMap
 
-        twitchPlaysX = TwitchPlaysX(KEYDELAY, keymap, CHANNEL_NAME, X_LIMIT)
+        twitchPlaysX = TwitchPlaysX(
+            KEYDELAY, keymap, CHANNEL_NAME, X_LIMIT, KILL_SWITCH_COMMANDS
+        )
 
         print(f"Starting TwitchPlaysX for channel: {CHANNEL_NAME}")
-        await twitchPlaysX.listen()
+        await twitchPlaysX.play()
 
 
 if __name__ == "__main__":
