@@ -2,16 +2,19 @@ import time
 import subprocess
 import platform
 import socket
+import re
+import asyncio
 import win32api  # Windows only
 import win32con  # Windows only
 
 
 class TwitchPlaysX:
-    def __init__(self, key_delay, keymap, channel_name) -> None:
+    def __init__(self, key_delay, keymap, channel_name, x_limit) -> None:
         self.os = self.get_os()
         self.key_delay = key_delay
         self.keymap = keymap
-        self.channel_name = channel_name
+        self.channel_name = channel_name.lower()
+        self.x_limit = x_limit
 
     # not tested
     def sendKeyLinux(self, button):
@@ -39,7 +42,20 @@ class TwitchPlaysX:
             self.sendKeyLinux(button)
 
     def all_valid_chars(self, char_array):
-        return all(char in self.keymap for char in char_array)
+        pattern = re.compile(r"^[a-z]+\d*$")
+        return all(pattern.match(char) for char in char_array)
+
+    def compile_chars(self, char_array):
+        compiled_chars = []
+        for char in char_array:
+            match = re.match(r"([a-z]+)(\d*)", char)
+            if match:
+                control, count = match.groups()
+                count = int(count or "1")
+                if count > self.x_limit:
+                    count = self.x_limit
+                compiled_chars.extend([control] * count)
+        return compiled_chars
 
     def process_message(self, author, message):
         characters = message.lower().split(" ")
@@ -47,33 +63,30 @@ class TwitchPlaysX:
         os_type = self.get_os()
 
         if self.all_valid_chars(characters):
-            for char in characters:
+            compiled_characters = self.compile_chars(characters)
+            for char in compiled_characters:
                 print(f"{author}: {char}")
                 self.sendKey(char, os_type)
 
-    def twitch_chat_listener(self, channel):
-        server = "irc.chat.twitch.tv"
-        port = 6667
-        nick = "justinfan123"  # Twitch allows anonymous users with 'justinfan' prefix
-        channel = f"#{channel}"
+    async def listen(self):
+        reader, writer = await asyncio.open_connection("irc.chat.twitch.tv", 6667)
 
-        sock = socket.socket()
-        sock.connect((server, port))
-        sock.send(f"NICK {nick}\r\n".encode("utf-8"))
-        sock.send(f"JOIN {channel}\r\n".encode("utf-8"))
+        writer.write(f"NICK justinfan1234\r\n".encode("utf-8"))
+        writer.write(f"JOIN #{self.channel_name}\r\n".encode("utf-8"))
 
         while True:
-            resp = sock.recv(2048).decode("utf-8")
+            data = await reader.read(2048)
+            message = data.decode().strip()
 
-            if resp.startswith("PING"):
-                sock.send("PONG\n".encode("utf-8"))
+            if message.startswith("PING"):
+                writer.write(b"PONG\r\n")
+                await writer.drain()
 
-            # Check if message is not empty
-            elif len(resp) > 0:
-                # Extract author from response
-                author = resp.split("!", 1)[0].split(":", 1)[-1]
-
-                # Extract message from response
-                msg = resp.split(channel, 1)[-1].split(":", 1)[-1].strip()
-
+            elif message:
+                author = message.split("!", 1)[0].split(":", 1)[-1]
+                msg = (
+                    message.split(f"#{self.channel_name.lower()}", 1)[-1]
+                    .split(":", 1)[-1]
+                    .strip()
+                )
                 self.process_message(author, msg)
