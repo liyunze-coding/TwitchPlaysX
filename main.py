@@ -5,7 +5,8 @@ import asyncio
 
 # SETTINGS
 CHANNEL_NAME = "CHANNEL_NAME"  # Twitch channel name
-KEYDELAY = 0.3
+KEY_DURATION = 0.5
+KEY_DELAY = 0.1
 X_LIMIT = 10  # "up20" will be converted to "up10" if X_LIMIT is 10
 KILL_SWITCH_COMMANDS = ["!killpokemon"]  # must be all lowercase
 
@@ -48,7 +49,7 @@ async def main():
         keymap = windowsKeyMap if os_type == "Windows" else linuxKeyMap
 
         twitchPlaysX = TwitchPlaysX(
-            KEYDELAY, keymap, CHANNEL_NAME, X_LIMIT, KILL_SWITCH_COMMANDS
+            KEY_DURATION, KEY_DELAY, keymap, CHANNEL_NAME, X_LIMIT, KILL_SWITCH_COMMANDS
         )
 
         print(f"Starting TwitchPlaysX for channel: {CHANNEL_NAME}")

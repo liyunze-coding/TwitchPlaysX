@@ -9,8 +9,11 @@ import win32con  # Windows only
 
 
 class TwitchPlaysX:
-    def __init__(self, key_delay, keymap, channel_name, x_limit, kill_commands) -> None:
+    def __init__(
+        self, key_duration, key_delay, keymap, channel_name, x_limit, kill_commands
+    ) -> None:
         self.os = self.get_os()
+        self.key_duration = key_duration
         self.key_delay = key_delay
         self.keymap = keymap
         self.channel_name = channel_name.lower()
@@ -19,13 +22,16 @@ class TwitchPlaysX:
 
     # not tested
     def sendKeyLinux(self, button):
-        subprocess.run(["xdotool", "key", button])
+        subprocess.run(["xdotool", "keydown", button])
+        time.sleep(self.key_duration)
+        subprocess.run(["xdotool", "keyup", button])
         time.sleep(self.key_delay)
 
     def sendKeyWindows(self, button):
         win32api.keybd_event(self.keymap[button], 0, 0, 0)
-        time.sleep(self.key_delay)
+        time.sleep(self.key_duration)
         win32api.keybd_event(self.keymap[button], 0, win32con.KEYEVENTF_KEYUP, 0)
+        time.sleep(self.key_delay)
 
     def get_os(self):
         os_name = platform.system()
