@@ -5,9 +5,9 @@ import asyncio
 
 # SETTINGS
 CHANNEL_NAME = "CHANNEL_NAME"  # Twitch channel name
-KEY_DURATION = 0.5
+KEY_DURATION = 500  # (milliseconds) duration of each key press
 KEY_DELAY = 0.1
-X_LIMIT = 10  # "up20" will be converted to "up10" if X_LIMIT is 10
+X_LIMIT = 10  # (seconds) time limit for each command
 KILL_SWITCH_COMMANDS = ["!killpokemon"]  # must be all lowercase
 
 # Keymap for Windows
@@ -20,8 +20,8 @@ windowsKeyMap = {
     "b": ord("Z"),
     "l": ord("A"),
     "r": ord("S"),
-    "start": ord("S"),
-    "select": ord("E"),
+    "start": ord("E"),
+    "select": ord("G"),
 }
 
 # Keymap for Linux, if you're using Windows you can ignore this
