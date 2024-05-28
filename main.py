@@ -4,7 +4,7 @@ import platform
 import asyncio
 
 # SETTINGS
-CHANNEL_NAME = "CHANNEL_NAME"  # Twitch channel name
+CHANNEL_NAME = "RythonDev"  # Twitch channel name
 KEY_DURATION = 500  # (milliseconds) duration of each key press
 KEY_DELAY = 0.1
 X_LIMIT = 10  # (seconds) time limit for each command

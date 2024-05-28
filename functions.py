@@ -81,6 +81,9 @@ class TwitchPlaysX:
             elif char in self.keymap:
                 compiled_chars.append({"control": char, "duration": self.key_duration})
 
+            else:
+                return []
+
         return compiled_chars
 
     def process_message(self, author, message, is_mod):
